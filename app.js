@@ -23,7 +23,13 @@ app.use(cookie_parser());
 app.use(express.urlencoded({extended:true}))
 // fileupload  >>>>
 
-
+const cloudniary=require('cloudinary').v2;
+cloudniary.config({
+    cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+    api_key:process.env.CLOUDINARY_API_KEY,
+    api_secret:CLOUDINARY_API_SECRET
+    
+})
 
 app.listen(process.env.PORT,(err)=>{
     console.log('port:',process.env.PORT);
