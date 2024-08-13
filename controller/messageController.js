@@ -1,6 +1,7 @@
 const Message=require('../models/message');
 const responseHandler=require('../utils/responseHandler')
-const errorHandler=require('../utils/errorHandler')
+const errorHandler=require('../utils/errorHandler');
+const { get } = require('mongoose');
 async function handlerSend(req,res){
 
     const {firstName,lastName,email,phone,message}=req.body;
@@ -24,6 +25,15 @@ async function handlerSend(req,res){
     });
     
 }
+async function getAllMeaasges(req,res){
 
-const sendMessage_= responseHandler(handlerSend);
-module.exports.sendMessage=sendMessage_;
+    const messages= await Message.find();
+    res.status(200).json({success:true,messages});
+
+
+
+
+}
+
+module.exports.getAllMeaasges=responseHandler(getAllMeaasges);
+module.exports.sendMessage= responseHandler(handlerSend);

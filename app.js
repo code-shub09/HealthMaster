@@ -7,6 +7,9 @@ const cookie_parser=require('cookie-parser')
 const db=require('./config/database')
 const messageRouter=require('./router/index')
 const errorMiddelware=require('./utils/responseHandler')
+const userRouter=require('./router/userROuter')
+const appointRouter=require('./router/appointmentRouter')
+const fileUpload=require('express-fileupload');
 
 // connecting database
 db();
@@ -27,6 +30,10 @@ app.use(cors({
 app.use(cookie_parser());
 
 // fileupload  >>>>
+app.use(fileUpload({
+    useTempFiles:true,
+    tempFileDir:'/temp/'
+}))
 
 const cloudniary=require('cloudinary').v2;
 cloudniary.config({
@@ -36,8 +43,11 @@ cloudniary.config({
     
 })
 
-app.use('/api/message',messageRouter);
+app.use('/api/v1/message',messageRouter);
+app.use('/api/v1/user',userRouter);
+app.use('/api/v1/appointment',appointRouter)
 
 app.listen(process.env.PORT,(err)=>{
     console.log('port:',process.env.PORT);
 })
+

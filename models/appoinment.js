@@ -1,10 +1,9 @@
+
 const mongoose=require('mongoose');
 
 const validator= require('validator');
-const { default: isEmail } = require('validator/lib/isEmail');
-const jwt=require('jsonwebtoken');
 
-const userSchema=new mongoose.Schema({
+const apponmentSchema= new mongoose.Schema({
     firstName:{
         type:String,
         required:true,
@@ -44,37 +43,53 @@ const userSchema=new mongoose.Schema({
         required:true,
         enum:['male','female']
     },
-    password:{
+    appointmentDate:{
         type:String,
-        minLength:[8,'password must contain at least 8 characters'],
-        required:true,
-        
+        required:true
     },
-    role:{
+    department:{
         type:String,
-        required:true,
-        enum:['Admin','Patient','Doctor'],
+        required:true
     },
-    doctarDepartment:{
-        type:String,
+    doctor:{
+        firstName:{
+            type:String,
+            required:true
+        },
+        lastNameName:{
+            type:String,
+            required:true
+        }
     },
-    dovAvtar:{
-        public_id:String,
-        url:String,
+    hasVisted:{
+        type:Boolean,
+        required:true
+    },
+    doctorId:{
+        type:mongoose.Schema.ObjectId,
+        required:true
+    },
+    patientId:{
+        type:mongoose.Schema.ObjectId,
+        required:true
 
     }
+    ,address:{
+        type:String,
+        required:true
+    },
+    status:{
+        type:String,
+        enum:["Pending","Accepted","Rejected"],
+        default:"Pending"
+    },
 
 
 
 
+   
 
 })
 
-userSchema.methods.genrateJsonWebToken=function(){
-     // jwt.sign(payload, secretOrPrivateKey, options);
-    return jwt.sign({id:this._id},process.env.JWT_SECRET_KEY,{expiresIn:'100000'})
-
-}
-
-const User=mongoose.model('User',userSchema)
-module.exports=User;
+const appointment=mongoose.model('Appointment',apponmentSchema);
+module.exports=appointment;
