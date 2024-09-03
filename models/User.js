@@ -27,14 +27,8 @@ const userSchema=new mongoose.Schema({
         minLength:[10,"First name must contain exact 10 digits"],
         maxLength:[10,"First name must contain exact 10 digits "]
 
-    }
-    ,
-    nic:{
-        type:String,
-        required:true,
-        minLength:[3,"First name must contain at least 10 letters"],
-        maxLength:[3,"js"]
     },
+    
     dob:{
         type:Date,
         required:true
@@ -72,7 +66,7 @@ const userSchema=new mongoose.Schema({
 
 userSchema.methods.genrateJsonWebToken=function(){
      // jwt.sign(payload, secretOrPrivateKey, options);
-    return jwt.sign({id:this._id},process.env.JWT_SECRET_KEY,{expiresIn:'100000'})
+    return jwt.sign({id:this._id},process.env.JWT_SECRET_KEY,{expiresIn:'24h'})
 
 }
 
