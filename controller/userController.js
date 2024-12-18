@@ -8,8 +8,10 @@ const Doctor = require('../models/doctor');
 const Deparment = require('../models/department')
 const crypto = require('crypto')
 const Slot = require('../models/slots');
-const { default: Appointment } = require('../../HealthMaster-Frontend/frontend/src/compoents/Appointment');
+
 async function PatientRegistor(req, res) {
+
+
 
     const { firstName, lastName, email, phone, gender, dob, password, role } = req.body;
     if (!firstName || !lastName || !email || !phone || !gender || !dob || !password || !role) {
@@ -20,14 +22,18 @@ async function PatientRegistor(req, res) {
 
     const user = await User.findOne({ email: email });
     if (user) {
-        throw new errorHandler.customError('user already exist', 400);
+        throw new errorHandler.customError('user already exist', 409);
     }
     const newUser = await User.create({ firstName, lastName, email, phone, dob, gender, password, role });
     jwtX.GenerateToken(newUser, res, 'user registered successfully', 200)
+
+
+
+
 }
 async function login(req, res) {
     const { email, password } = req.body;
-    console.log('emai;',email,password)
+  
     if (!email || !password) {
         throw new errorHandler.customError('pls enter login details correctly', 400);
     }
@@ -35,7 +41,7 @@ async function login(req, res) {
 
 
     const user = await User.findOne({ email: email });
-    console.log('user,',user);
+    
 
     if (!user) {
         throw new errorHandler.customError('please sign up , user donot exist', 400);
@@ -77,8 +83,7 @@ async function addAdmin(req, res) {
 async function getAllDoctors(req, res) {
 
     const doctors = await Doctor.find();
-    console.log('docrt')
-    console.log(doctors)
+
     res.status(200).json({
         success: true,
         doctors
@@ -96,7 +101,7 @@ async function getUserDetails(req, res) {
 }
 
 async function AdminLogout(req, res) {
-    console.log('log',req.user);
+ 
 
     res.status(200).cookie("adminToken", '', { maxAge: 0, httpOnly: true }).json({
         success: true,
@@ -115,8 +120,9 @@ async function PatientLogout(req, res) {
 
 
 async function addNewDoctor(req, res) {
-    const { firstName, lastName, email, phone, dob, department, experience, qualifications, timetable } = req.body;
-    if (!firstName || !lastName || !email || !phone || !dob || !department || !timetable || !qualifications || !experience) {
+
+    const { firstName, lastName, email, phone, dob, department, experience, qualifications, gender } = req.body;
+    if (!firstName || !lastName || !email || !phone || !dob || !department || !qualifications || !experience || !gender) {
         throw new errorHandler.customError('pls fill the form correctly', 400);
     }
     // if (!req.files || Object.keys(req.files).length == 0) {
@@ -135,19 +141,15 @@ async function addNewDoctor(req, res) {
         throw new errorHandler.customError(`${isDoctorRegistered.role} already registerd`, 400)
     }
 
-    // const cloudRes= await cloud.uploader.upload(docAvtar.tempFilePath)
+  
 
-    // if(!cloudRes ||cloudRes.error){
-    //     console.log('error')
-    // }
-
-    const doctor = await Doctor.create({ firstName, lastName, email, password, phone, dob, department, experience, qualifications, timetable });
+    const doctor = await Doctor.create({ firstName, lastName, email, password, gender, phone, dob, department, experience, qualifications });
     const x = await Slot.create({ doctorId: doctor.id });
     try {
         await Deparment.findOneAndUpdate({ name: doctor.department }, { $push: { doctorsList: doctor.id } }, { new: true, useFindAndModify: false });
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
     }
 
 
@@ -156,13 +158,19 @@ async function addNewDoctor(req, res) {
 }
 
 async function getDepartment_doctor(req, res) {
+    try {
+        const department = await Deparment.find().populate('doctorsList');
+
    
-    const department = await Deparment.find().populate('doctorsList');
+        res.status(200).json({
+            success: true, department: department
+        })
+    } catch (error) {
+        // console.log(error);
+
+    }
 
 
-    res.status(200).json({
-        success: true, department:department
-    })
 }
 async function authCheckPatient(req, res) {
     res.status(200).json({ success: true });
@@ -192,23 +200,23 @@ async function getADoctor(req, res) {
 async function getSlots(req, res) {
 
     const { id, dateX } = req.body;
-    console.log("date:",req.body);
-
-    
-
    
+
+
+
+
     try {
         const slotDocs = await Slot.find({ doctorId: id });
-        console.log('slots of doc:',slotDocs)
+      
         let slotsForDate = [];
 
         // Loop through each document to find matching date slots
         slotDocs.forEach(slotDoc => {
             if (slotDoc.slots && Array.isArray(slotDoc.slots)) {
-                console.log('kadjkasdsa')
+             
                 const matchingSlots = slotDoc.slots.filter(slot => {
                     // Compare the dates by stripping the time part
-                    console.log('ok:',new Date(slot.date).toDateString(),"osdasd:",new Date(dateX).toDateString())
+
                     return new Date(slot.date).toDateString() === new Date(dateX).toDateString();
                 });
                 slotsForDate.push(...matchingSlots);
@@ -219,27 +227,27 @@ async function getSlots(req, res) {
         //     // Compare the dates by stripping the time part
         //     return slot.date.toDateString() === date;
         // });
-        console.log(slotsForDate)
-        let bookedSlots=[];
-        slotsForDate.forEach(element => {
-           bookedSlots.push(element.time) 
-        });
-    
-        res.status(200).json({
-            Xslot:bookedSlots
-            ,success:true
-        })
        
+        let bookedSlots = [];
+        slotsForDate.forEach(element => {
+            bookedSlots.push(element.time)
+        });
+
+        res.status(200).json({
+            Xslot: bookedSlots
+            , success: true
+        })
+
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
 
     }
 
 
 }
 
-module.exports.getSlots=responseHandler(getSlots)
+module.exports.getSlots = responseHandler(getSlots)
 module.exports.getADoctor = responseHandler(getADoctor);
 
 module.exports.addDeparment = responseHandler(addDeparment);

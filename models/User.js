@@ -36,7 +36,7 @@ const userSchema=new mongoose.Schema({
     gender:{
         type:String,
         required:true,
-        enum:['male','female']
+        enum:['male','Female']
     },
     password:{
         type:String,
@@ -47,7 +47,7 @@ const userSchema=new mongoose.Schema({
     role:{
         type:String,
         required:true,
-        enum:['Admin','Patient','Doctor'],
+        enum:['Admin','Patient'],
     },
     doctarDepartment:{
         type:String,

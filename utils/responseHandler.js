@@ -10,7 +10,7 @@ const responseHandler = (func) => {
         try {
             await func(req, res, next);
         } catch (error) {
-            console.log(error)
+          
             if(error.name=='ValidationError'){
                 error.statusCode=400;
             }

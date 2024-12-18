@@ -27,6 +27,11 @@ const doctorSchema = new mongoose.Schema({
         required:true,
         
     },
+    gender:{
+        type:String,
+        enum:['Male','Female']
+
+    },
     phone: {
         type: String,
         required: true,
@@ -49,10 +54,12 @@ const doctorSchema = new mongoose.Schema({
         type: [String], // Array of qualifications
         required: true
     },
+    doctorAvtar:{
+        type:String
+    },
     timetable: [{
         day: {
             type: String,
-            required: true,
             enum: [
                 'Monday',
                 'Tuesday',
@@ -66,20 +73,24 @@ const doctorSchema = new mongoose.Schema({
         slots: {
             startTime: {
                 type: String, // Example: "09:00 AM"
-                required: true,
+                
             },
             endTime: {
                 type: String, // Example: "01:00 PM"
-                required: true,
+                
             }
+        },
+        duration:{
+            type:String,
+            
         }
     }]
 
  
 });
 
-doctorSchema.methods.doctorJsonWebToken=()=>{
-     return jwt.sign({id:this._id},process.env.JWT_SECRET_KEY,{expiresIn:'24h'})
+doctorSchema.methods.doctorJsonWebToken=function(){
+     return jwt.sign({id:this._id},process.env.JWT_SECRET_KEY_DOCTOR,{expiresIn:'24h'})
 }
 // Create the Doctor model from the schema
 const Doctor = mongoose.model('Doctor', doctorSchema);

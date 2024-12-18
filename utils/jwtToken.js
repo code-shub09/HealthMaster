@@ -6,10 +6,9 @@ const User = require('../models/User');
 
 function generateToken(user, res, message, statusCode) {
     const token = user.genrateJsonWebToken();
-    console.log('cookie')
-    console.log(user.role)
+   
     const cookieName = user.role === "Admin" ? "adminToken" : "patientToken"
-    console.log(cookieName)
+  
 
     res.status(statusCode).cookie(cookieName, token, {
         maxAge: 24 * 60 * 60 * 1000, // 1 day,
@@ -39,5 +38,5 @@ function doctor_generateToken(doctor, res, message, statusCode) {
     })
 
 }
-
+module.exports.doctor_generateToken=doctor_generateToken;
 module.exports.GenerateToken = generateToken;

@@ -1,11 +1,15 @@
-const express= require('express')
-const router=express.Router();
-const appointController=require('../controller/appointment');
-const auth=require('../utils/auth');
-router.post('/',auth.isPatientAuthenticated,appointController.createAppontment);
-router.get('/history',appointController.history);
-router.get('/getall',appointController.getAllAppointments);
+const express = require('express')
+const router = express.Router();
+const appointController = require('../controller/appointment');
+const auth = require('../utils/auth');
 
-router.put('/update',appointController.UpdateAppointment);
-router.get('/dotor-appointment',auth.isDoctorAuthenticated,appointController.doctorAllAppointments);
-module.exports=router;
+const multer = require('multer');
+const path = require('path');
+const upload=require('../utils/multerSetup');
+
+router.post('/', auth.isPatientAuthenticated, appointController.createAppontment);
+router.get('/history', auth.isPatientAuthenticated,appointController.history);
+router.get('/getall', appointController.getAllAppointments);
+router.post('/doctor-appointment',auth.isAuthenticated,appointController.adminAllAppointments);
+
+module.exports = router;

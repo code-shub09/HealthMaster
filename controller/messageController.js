@@ -6,8 +6,7 @@ async function handlerSend(req,res){
 
     const {firstName,lastName,email,phone,message}=req.body;
     if(!firstName || !lastName || ! email || !phone || !message ){
-        console.log(firstName,lastName,email,phone,message)
-        console.log('somthing is miising');
+      
 
         //   return res.status(400).json({
         //     success:false,
@@ -20,7 +19,7 @@ async function handlerSend(req,res){
 
    
     await Message.create({ firstName, lastName, email, phone, message });
-    console.log(firstName,lastName,email,phone,message)
+   
     res.status(200).json({
         success: true,
         message: 'Message sent successfully'
@@ -30,8 +29,7 @@ async function handlerSend(req,res){
 async function getAllMeaasges(req,res){
 
     const messages= await Message.find();
-    console.log('mess')
-    console.log(messages)
+  
     res.status(200).json({success:true,messages});
 
 
