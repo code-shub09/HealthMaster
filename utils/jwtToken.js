@@ -29,7 +29,7 @@ function doctor_generateToken(doctor, res, message, statusCode) {
 
     res.status(statusCode).cookie(cookieName, token, {
         maxAge: 24 * 60 * 60 * 1000, // 1 day,
-        httpOnly: true
+        httpOnly: false
 
     }).json({
         sucess: true, message,
