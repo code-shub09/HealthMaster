@@ -25,12 +25,27 @@ db();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+// app.use(cors({
+//     origin: ["https://health-master-patient.vercel.app",
+//         process.env.DASHBOARD_URL, process.env.DOCTOR_DASHOBARD],
+//     methods: ['GET', 'POST', 'DELETE', 'PUT'],
+//     credentials: true
+// }))
+const allowedOrigins = [
+    "https://health-master-patient.vercel.app"
+];
+
 app.use(cors({
-    origin: ["https://health-master-patient.vercel.app",
-        process.env.DASHBOARD_URL, process.env.DOCTOR_DASHOBARD],
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     credentials: true
-}))
+}));
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://health-master-patient.vercel.app');
     res.header('Access-Control-Allow-Credentials', 'true');
