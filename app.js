@@ -75,6 +75,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
     console.log(`[${req.method}] ${req.url}`);
+    console.log("Cookies received:", req.cookies);
     next();
 });
 

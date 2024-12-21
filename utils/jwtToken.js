@@ -12,7 +12,9 @@ function generateToken(user, res, message, statusCode) {
 
     res.status(statusCode).cookie(cookieName, token, {
         maxAge: 24 * 60 * 60 * 1000, // 1 day,
-        httpOnly: true
+        httpOnly: true,
+        secure: true, // Use true if your site uses HTTPS
+        sameSite: "none", // Required for cross-origin cookies
 
     })
         .json({
