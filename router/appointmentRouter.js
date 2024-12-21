@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const appointController = require('../controller/appointment');
 const auth = require('../utils/auth');
-
+console.log('appointment router');
 const multer = require('multer');
 const path = require('path');
 const upload=require('../utils/multerSetup');

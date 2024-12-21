@@ -72,13 +72,20 @@ app.use((req, res, next) => {
 
     next();
 });
-app.get('*', (req, res) => {
-    res.status(404).send('API only: Frontend hosted separately');
+
+app.use((req, res, next) => {
+    console.log(`[${req.method}] ${req.url}`);
+    next();
 });
+
+
 app.use('/api/v1/message', messageRouter);
 app.use('/api/v1/user', pateintAdminRouter);
 app.use('/api/v1/appointment', appointRouter)
 app.use('/api/v1/doctor', doctorRouter)
+app.get('*', (req, res) => {
+    res.status(404).send('API only: Frontend hosted separately');
+});
 // Catch-all route to serve React app
 
 
