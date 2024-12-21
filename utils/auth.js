@@ -25,6 +25,7 @@ async function isAuthenticated(req,res,next){
 
 async function isPatientAuthenticated(req,res,next){
     const toekn=req.cookies.patientToken;
+    console.log('patient auth :', toekn);
    
     if(!toekn){
         throw new errorHandler.customError('pateint is not authenticated',401);
