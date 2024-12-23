@@ -23,8 +23,8 @@ const corsOptions = {
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
-// app.use(cors(corsOptions));
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors(corsOptions));
+
 
 
 // Middleware for parsing cookies
