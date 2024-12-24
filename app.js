@@ -17,13 +17,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Simplified CORS configuration
+const allowedOrigins = [
+    "https://health-master-patient.vercel.app",
+    "https://doctor-dash-board.vercel.app"
+];
+
 const corsOptions = {
-    origin: "https://health-master-patient.vercel.app",
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
 app.use(cors(corsOptions));
+
 
 
 
