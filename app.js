@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Simplified CORS configuration
 const allowedOrigins = [
-    "https://health-master-patient.vercel.app",
+    "https://luxury-squirrel-9c64f8.netlify.app/",
     "https://doctor-dash-board.vercel.app"
 ];
 
