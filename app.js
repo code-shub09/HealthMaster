@@ -19,7 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 // Simplified CORS configuration
 const allowedOrigins = [
     "https://luxury-squirrel-9c64f8.netlify.app",
-    'https://health-master-patient.vercel.app'
+    'https://health-master-patient.vercel.app',
+    "https://admin-dashboard-8tlp.vercel.app"
+
 
    
 ];
