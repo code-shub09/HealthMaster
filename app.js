@@ -19,12 +19,13 @@ app.use(express.urlencoded({ extended: true }));
 // Simplified CORS configuration
 const allowedOrigins = [
     "https://luxury-squirrel-9c64f8.netlify.app/"
-    
+
    
 ];
 
 const corsOptions = {
     origin: (origin, callback) => {
+        console.log("Request Origin:", origin);
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
