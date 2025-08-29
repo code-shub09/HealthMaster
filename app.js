@@ -20,7 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
     "https://luxury-squirrel-9c64f8.netlify.app",
     'https://health-master-patient.vercel.app',
-    "https://admin-dashboard-8tlp.vercel.app"
+    "https://admin-dashboard-8tlp.vercel.app",
+    "https://admin-dashboard-eta-six-36.vercel.app",
+    "https://doctor-dash-board.vercel.app"
 
 
    
